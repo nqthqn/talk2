@@ -7,5 +7,5 @@ admin.autodiscover()
 
 urlpatterns = patterns('', 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^talk/', include('talk.urls')),  # talk urls
+    url(r'^', include('talk.urls')),
 )

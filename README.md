@@ -6,4 +6,4 @@ A small ajax powered Django app for implementing a super simple communication wa
 
 ## URLs
 
-1. Main - http://localhost:8000/talk/
+1. Main - http://localhost:8000/

@@ -1,6 +1,5 @@
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse
-from django.utils import simplejson
 from django.template import Context, loader, RequestContext
 
 from talk.models import Post, Comment
@@ -30,7 +29,7 @@ def create_post(request):
         response_data['result'] = 'Uh oh!'
         response_data['message'] = 'We could process your request at this time.'
 
-    return HttpResponse(simplejson.dumps(response_data), content_type="application/json")
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 # sanity check
 def test_ajax(request):

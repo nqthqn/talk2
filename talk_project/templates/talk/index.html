@@ -1,92 +1,51 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Talk Template</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-  </head>
-  <body>
-    <div class="container">
-      <br>  
+{% extends "talk/base.html" %}
+{% block content %}
+<br><br>
+<div class="row white">
+    <div class="large-12 columns">
+        <a href="/logout" class="right">Logout</a>
+        <h2>Hi, {{request.user.username}}</h2>
+    </div>
+</div>
+<div class="row white">
+    <div class="columns large-12">
+        <form onsubmit='return false;' >
+            {% csrf_token %}
+            <input type="text" id="the_post" />
+            <div id="results"></div>
+            <input type='submit' id='create_post_btn' class="tiny button" />
+        </form>
+        
+        <hr>
+        
+        <div id="talk">
+           <!-- The feed -->
+            {% for p in all_posts %}   
+                <div class="panel radius" id='post-{{p.pk}}'> 
 
-      <form onsubmit="return false;">
-        <input name="example" id="forminput" type="text">
-        <button class="btn btn-primary" onclick="create()">TEST</button>
-      </form>
-       
-      <div id="result">
-      </div>
+                    <p>
+                        {{p.text}}
+                        <br><em style='font-size:.7em;'>— {{ p.author }} on {{p.created}}</em>
+                    </p>
+                
+                {% for c in p.comment_set.all %}
+                    <p class='comment'>
+                        {{ c.text }}
+                        <br><em style='font-size:.7em;'>— {{ c.author }} on {{c.created}}</em>
+                    </p>
+                {% endfor %}
+                    <!-- When you click Comment it shows the comment box form and hides the comment button -->
+                    <a id="open-comment-{{p.pk}}" >Comment</a>
 
-      <script type="text/javascript">
-        function create() {
-          $.ajax({
-            url : "test_ajax/",
-            type : "POST",
-            success : function() {
-              console.log("success")
-            },
-            error : function(xhr,errmsg,err) {
-              console.log(xhr.status + ": " + xhr.responseText);
-            }
-          });
-        };
-
-
-        //This function gets cookie with a given name
-        function getCookie(name) {
-            var cookieValue = null;
-            if (document.cookie && document.cookie != '') {
-                var cookies = document.cookie.split(';');
-                for (var i = 0; i < cookies.length; i++) {
-                    var cookie = jQuery.trim(cookies[i]);
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-        var csrftoken = getCookie('csrftoken');
-
-        //The functions below will create a header with csrftoken
-
-        function csrfSafeMethod(method) {
-            // these HTTP methods do not require CSRF protection
-            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-        }
-        function sameOrigin(url) {
-            // test that a given url is a same-origin URL
-            // url could be relative or scheme relative or absolute
-            var host = document.location.host; // host + port
-            var protocol = document.location.protocol;
-            var sr_origin = '//' + host;
-            var origin = protocol + sr_origin;
-            // Allow absolute or scheme relative URLs to same origin
-            return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
-                (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
-                // or any other URL that isn't scheme relative or absolute i.e relative.
-                !(/^(\/\/|http:|https:).*/.test(url));
-        }
-
-        $.ajaxSetup({
-            beforeSend: function(xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
-                    // Send the token to same-origin, relative URLs only.
-                    // Send the token only if the method warrants CSRF protection
-                    // Using the CSRFToken value acquired earlier
-                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                }
-            }
-        });
-      </script>
-
-
-      
-
-  </body>
-</html>
-
+                    <form onsubmit='return false;' style='display:none;' id='comment-box-{{p.pk}}'>
+                        {% csrf_token %}
+                        <input type="text" id="comment-for-{{p.pk}}" />
+                        <input type='submit' id='comment-submit-{{p.pk}}' class='tiny button' />
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script src="static/scripts/main.js"></script>
+{% endblock %}

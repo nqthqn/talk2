@@ -9,9 +9,9 @@
 </div>
 <div class="row white">
     <div class="columns large-12">
-        <form onsubmit='return false;' >
+        <form id="post-form" onsubmit='return false;' >
             {% csrf_token %}
-            <input type="text" id="the_post" />
+            <input type="text" id="the_post" required/>
             <div id="results"></div>
             <input type='submit' id='create_post_btn' class="tiny button" />
         </form>
@@ -37,7 +37,7 @@
                     <!-- When you click Comment it shows the comment box form and hides the comment button -->
                     <a id="open-comment-{{p.pk}}" >Comment</a>
 
-                    <form onsubmit='return false;' style='display:none;' id='comment-box-{{p.pk}}'>
+                    <form id="post-form" onsubmit='return false;' style='display:none;' id='comment-box-{{p.pk}}'>
                         {% csrf_token %}
                         <input type="text" id="comment-for-{{p.pk}}" />
                         <input type='submit' id='comment-submit-{{p.pk}}' class='tiny button' />

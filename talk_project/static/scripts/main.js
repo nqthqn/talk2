@@ -1,5 +1,5 @@
 $("#talk").on('click', 'a[id^=open-comment-]', function(){
-    var p = $(this).attr('id').split('-')[2];
+    var p = $(this).attr('id').split('-')[2];  // terrible variable name! i have no idea what p is. or pp.
     $('#comment-box-'+p).show();
     $('#open-comment-'+p).hide();
     $('#comment-for-'+p).focus();
@@ -10,7 +10,8 @@ $("#talk").on('click', 'input[id^=comment-submit-]', function(){
     create_comment(p);
 });
 
-$('#create_post_btn').on('click', function(){
+$('#post-form').on('submit', function(){
+    console.log("form submitted!")  // sanity check
     create_post();
 });
 
@@ -55,6 +56,7 @@ function create_post() {
   });
 };
 
+// ugly. use angular.
 function make_post(json){
     var html = "<div class='panel radius' id='post-"+json.postpk+"'><p>"+json.text+"<br> \
     <em style='font-size:.7em;'>— "+json.author+" on "+json.created+"</em></p><a id='open-comment-"+json.postpk+"'>Comment</a> \

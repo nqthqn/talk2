@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-#from django.utils import simplejson
+
+from talk.models import Post, Comment
+
 import json
-from .models import Post, Comment
 
 
-# Create your views here.
 def home(req):
     
     # Clean up... TODO: Do not allow empty comments or posts

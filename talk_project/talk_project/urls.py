@@ -1,7 +1,6 @@
 from django.conf.urls import patterns, include, url
 from talk import views
-
-from .views import logout_page
+from talk_project.views import logout_page
 
 from django.contrib import admin
 admin.autodiscover()

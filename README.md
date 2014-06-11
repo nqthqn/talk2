@@ -11,3 +11,4 @@ A small ajax powered Django app for implementing a super simple communication wa
 ## Setup
 
 1. Activate virtualenv, install requirements, run server
+1. Main - http://localhost:8000/

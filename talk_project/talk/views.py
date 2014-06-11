@@ -1,44 +1,73 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render
 from django.http import HttpResponse
-from django.utils import simplejson
-from django.template import Context, loader, RequestContext
-
-from talk.models import Post, Comment
-
+#from django.utils import simplejson
 import json
+from .models import Post, Comment
 
-# load load all posts
-def home(request):
+
+# Create your views here.
+def home(req):
     
-    # grab posts, order by date
-    latest_posts = Post.objects.order_by('created').reverse()
+    # Clean up... TODO: Do not allow empty comments or posts
+    for p in Post.objects.all():
+        if p.text == '':
+            p.delete()
+    for c in Comment.objects.all():
+        if c.text == '':
+            c.delete()
 
-    t = loader.get_template('talk/index.html')
-    c = Context({'latest_posts': latest_posts,})
-    return HttpResponse(t.render(c))
+    tmpl_vars = {
+        'all_posts':Post.objects.reverse(),
+    }
+
+    return render(req, 'talk/index.html', tmpl_vars)
+
+# TODO: delete post
+
+# TODO: limit number of comments shown per page. Instead add on a load more button
+def load_more(request):
+
+    response_data['posts'] = Post.objects.reverse() # Need JSON, not python objects
+
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
 
 def create_post(request):
+
     post_text = request.POST.get('the_post')
     response_data = {}
+    
+    post = Post(text = post_text, author = request.user)
+    post.save()
+    
+    response_data['result'] = 'Success!'
+    response_data['postpk'] = post.pk
+    response_data['text'] = post.text
+    response_data['created'] = post.created.strftime('%m/%d %H:%M')
+    response_data['author'] = post.author.username
 
-    try:
-        post = Post(text = post_text, author = request.user)
-        post.save()
-        response_data['result'] = 'Success!'
-        response_data['message'] = post_text
-    except:
-        response_data['result'] = 'Uh oh!'
-        response_data['message'] = 'We could process your request at this time.'
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
 
-    return HttpResponse(simplejson.dumps(response_data), content_type="application/json")
+# TODO: delete comment
 
-# sanity check
-def test_ajax(request):
-    if request.POST:
-        return HttpResponse(json.dumps({'message' : 'awesome'}, mimetype='application/javascript', context_instance=RequestContext(request)))
-    else:
-        return HttpResponse(json.dumps(
-            {'message' : 'awesome'},
-            ensure_ascii=False), 
-            mimetype='application/javascript'
-        )
+def create_comment(request):
+
+    the_comment = request.POST.get('the_comment')
+    its_post = Post.objects.get(pk=int(request.POST.get('postpk')))
+
+    response_data = {}
+
+    comment = Comment(post = its_post, text = the_comment, author = request.user)
+    comment.save()
+
+    # Tell the frontend what the backend just did
+    response_data['result'] = 'Success!'
+    response_data['text'] = comment.text
+    response_data['created'] = comment.created.strftime('%m/%d %H:%M')
+    response_data['author'] = comment.author.username
+
+    response_data['hugs_and_kisses'] = True
+
+
+    return HttpResponse(json.dumps(response_data), content_type="application/json")

@@ -11,6 +11,9 @@ class Post(models.Model):
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['created']
+
     def __unicode__(self):
         return self.text+' - '+self.author.username
 
@@ -22,6 +25,9 @@ class Comment(models.Model):
     # Time is relative
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['created']
 
     def __unicode__(self):
         return self.text+' - '+self.author.username

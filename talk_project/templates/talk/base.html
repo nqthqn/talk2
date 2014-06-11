@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>talk</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    
+    <!-- Foundation & FontAwesome -->
+    <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/foundation/5.2.3/css/foundation.css">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/trianglify/0.1.2/trianglify.min.js"></script>
+
+  <script type="text/javascript">
+  $(function(){
+
+    // See more options here: https://github.com/qrohlf/trianglify#options
+    var ops = {
+      noiseIntensity: 0,
+    }
+    var t = new Trianglify(ops);
+    var pattern = t.generate(document.body.clientWidth, document.body.clientHeight);
+    document.body.setAttribute('style', 'background-image: '+pattern.dataUrl);
+  });
+  </script>
+  <style type="text/css">
+  .comment{
+    background:rgba(255,255,255,1);
+    padding: 10px;
+    border:none;
+  }
+  .white{
+      background:rgba(255,255,255,1);
+      padding-top: 10px;
+      border:none;
+  }
+  </style>
+  {% block head %}
+  {% endblock %}
+</head>
+<body>
+{% block content %}
+{% endblock %}
+</body>
+</html>

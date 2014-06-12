@@ -31,6 +31,7 @@ function create_comment(post_primary_key){
       $('#open-comment-'+post_primary_key).show();
       $('#open-comment-'+post_primary_key).before(make_comment(json));
     },
+
     error : function(xhr,errmsg,err) {
       // Show an error
       $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error. <a href='#' class='close'>&times;</a></div>");

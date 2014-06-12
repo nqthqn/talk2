@@ -1,13 +1,15 @@
 $("#talk").on('click', 'a[id^=open-comment-]', function(){
-    var p = $(this).attr('id').split('-')[2];  // terrible variable name! i have no idea what p is. or pp.
-    $('#comment-box-'+p).show();
-    $('#open-comment-'+p).hide();
-    $('#comment-for-'+p).focus();
+    var post_primary_key = $(this).attr('id').split('-')[2];
+    $('#comment-box-'+post_primary_key).show();
+    $('#open-comment-'+post_primary_key).hide();
+    $('#comment-for-'+post_primary_key).focus();
 });
 
 $("#talk").on('click', 'input[id^=comment-submit-]', function(){
-    var p = $(this).attr('id').split('-')[2];
-    create_comment(p);
+    var post_primary_key = $(this).attr('id').split('-')[2];
+    if ($('#comment-for-'+post_primary_key).val() !== "") {
+        create_comment(post_primary_key);
+    }
 });
 
 $('#post-form').on('submit', function(){
@@ -16,18 +18,18 @@ $('#post-form').on('submit', function(){
 });
 
 /* For commenting */
-function create_comment(pp){
+function create_comment(post_primary_key){
   $.ajax({
     url : "create_comment/",
     type : "POST",
-    data : { the_comment : $('#comment-for-'+pp).val(), postpk : pp},
+    data : { the_comment : $('#comment-for-'+post_primary_key).val(), postpk : post_primary_key},
     success : function(json) {
 
       // Hide the comment box, show the comment button and append the comment.
-      $('#comment-box-'+pp).hide();
-      $('#comment-for-'+pp).val('');
-      $('#open-comment-'+pp).show();
-      $('#open-comment-'+pp).before(make_comment(json));
+      $('#comment-box-'+post_primary_key).hide();
+      $('#comment-for-'+post_primary_key).val('');
+      $('#open-comment-'+post_primary_key).show();
+      $('#open-comment-'+post_primary_key).before(make_comment(json));
     },
     error : function(xhr,errmsg,err) {
       // Show an error

@@ -15,19 +15,19 @@
             <div id="results"></div>
             <input type='submit' id='create_post_btn' class="tiny button" />
         </form>
-        
+
         <hr>
-        
+
         <div id="talk">
            <!-- The feed -->
-            {% for p in all_posts %}   
-                <div class="panel radius" id='post-{{p.pk}}'> 
+            {% for p in all_posts %}
+                <div class="panel radius" id='post-{{p.pk}}'>
 
                     <p>
                         {{p.text}}
                         <br><em style='font-size:.7em;'>— {{ p.author }} on {{p.created}}</em>
                     </p>
-                
+
                 {% for c in p.comment_set.all %}
                     <p class='comment'>
                         {{ c.text }}
@@ -35,11 +35,11 @@
                     </p>
                 {% endfor %}
                     <!-- When you click Comment it shows the comment box form and hides the comment button -->
-                    <a id="open-comment-{{p.pk}}" >Comment</a>
+                    <a id="open-comment-{{p.pk}}">Comment</a>
 
-                    <form id="post-form" onsubmit='return false;' style='display:none;' id='comment-box-{{p.pk}}'>
+                    <form onsubmit='return false;' style='display:none;' id='comment-box-{{p.pk}}'>
                         {% csrf_token %}
-                        <input type="text" id="comment-for-{{p.pk}}" />
+                        <input type="text" id="comment-for-{{p.pk}}" required/>
                         <input type='submit' id='comment-submit-{{p.pk}}' class='tiny button' />
                     </form>
                 </div>

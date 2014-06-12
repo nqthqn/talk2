@@ -8,14 +8,6 @@ import json
 
 def home(req):
 
-    # Clean up... TODO: Do not allow empty comments or posts
-    for p in Post.objects.all():
-        if p.text == '':
-            p.delete()
-    for c in Comment.objects.all():
-        if c.text == '':
-            c.delete()
-
     tmpl_vars = {
         'all_posts': Post.objects.reverse(),
     }

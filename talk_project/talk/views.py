@@ -27,11 +27,13 @@ def home(req):
 
 # TODO: limit number of comments shown per page.
 # Instead add on a load more button
-def load_more(request):
+# def load_more(request):
 
-    response_data['posts'] = Post.objects.reverse() # Need JSON, not python objects
+    # Need JSON, not python objects
+    # response_data['posts'] = Post.objects.reverse()
 
-    return HttpResponse(json.dumps(response_data), content_type="application/json")
+    # return HttpResponse(json.dumps(response_data),
+        # content_type="application/json")
 
 
 def create_post(request):
@@ -48,7 +50,10 @@ def create_post(request):
     response_data['created'] = post.created.strftime('%m/%d %H:%M')
     response_data['author'] = post.author.username
 
-    return HttpResponse(json.dumps(response_data), content_type="application/json")
+    return HttpResponse(
+        json.dumps(response_data),
+        content_type="application/json"
+    )
 
 # TODO: delete comment
 
@@ -71,4 +76,7 @@ def create_comment(request):
 
     response_data['hugs_and_kisses'] = True
 
-    return HttpResponse(json.dumps(response_data), content_type="application/json")
+    return HttpResponse(json.dumps(
+        response_data),
+        content_type="application/json"
+    )

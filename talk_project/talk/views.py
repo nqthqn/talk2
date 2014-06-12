@@ -15,7 +15,7 @@ def home(req):
     return render(req, 'talk/index.html', tmpl_vars)
 
 # TODO: delete post
-
+# TODO: delete comment
 
 # TODO: limit number of comments shown per page.
 # Instead add on a load more button
@@ -46,8 +46,6 @@ def create_post(request):
         json.dumps(response_data),
         content_type="application/json"
     )
-
-# TODO: delete comment
 
 
 def create_comment(request):

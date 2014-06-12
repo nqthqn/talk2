@@ -13,6 +13,7 @@ $(function() {
     // Submit comment on click
     $("#talk").on('click', 'input[id^=comment-submit-]', function(){
         var post_primary_key = $(this).attr('id').split('-')[2];
+        // NOTE: does not handle a scenario where a user simply adds spaces into the input box
         if ($('#comment-for-'+post_primary_key).val() !== "") {
             create_comment(post_primary_key);
         }
@@ -22,6 +23,12 @@ $(function() {
     $('#post-form').on('submit', function(){
         console.log("form submitted!")  // sanity check
         create_post();
+    });
+
+    // Delete post on click
+    $("#talk").on('click', 'a[id^=delete-post-]', function(){
+        var post_primary_key = $(this).attr('id').split('-')[2];
+        // call ajax function
     });
 
     /* AJAX for commenting */
@@ -72,10 +79,11 @@ $(function() {
     // ugly. use angular.
     function make_post(json){
         var html = "<div class='panel radius' id='post-"+json.postpk+"'><p>"+json.text+"<br> \
-        <em style='font-size:.7em;'>— "+json.author+" on "+json.created+"</em></p><a id='open-comment-"+json.postpk+"'>Comment</a> \
+        <em style='font-size:.7em;'>— "+json.author+" on "+json.created+"</em></p><a id='open-comment-"+json.postpk+"'>Comment</a>&nbsp;&middot;&nbsp;<a id='delete-post-"+json.postpk+"'>Delete</a> \
         <form onsubmit='return false;' style='display:none;' id='comment-box-"+json.postpk+"'> \
         <input type='text' id='comment-for-"+json.postpk+"' /> \
-        <input type='submit' id='comment-submit-"+json.postpk+"' class='tiny button' /></form></div>";
+        <input type='submit' id='comment-submit-"+json.postpk+"' class='tiny button' /></form> \
+        </div>";
 
         return html;
     };

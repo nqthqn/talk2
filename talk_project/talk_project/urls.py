@@ -1,12 +1,11 @@
 from django.conf.urls import patterns, include, url
-from talk import views
 from talk_project.views import logout_page
 
 from django.contrib import admin
 admin.autodiscover()
 
 
-urlpatterns = patterns('', 
+urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^login/', 'django.contrib.auth.views.login'),
     (r'^logout/$', logout_page),

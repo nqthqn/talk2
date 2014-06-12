@@ -48,10 +48,12 @@ class RequireLoginMiddleware(object):
         # Explicitly return None for all non-matching requests
         return None
 
+
 class MaintenanceMiddleware(object):
     """Serve a temporary redirect to a maintenance url in maintenance mode"""
     def process_request(self, request):
         if request.method == 'POST':
             if getattr(settings, 'MAINTENANCE_MODE', False) == True and hasattr(settings, 'MAINTENANCE_URL'):
+                # http? where is that defined?
                 return http.HttpResponseRedirect(settings.MAINTENANCE_URL)
             return None

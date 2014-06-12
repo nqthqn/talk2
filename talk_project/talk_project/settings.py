@@ -59,13 +59,12 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
     'talk.middleware.RequireLoginMiddleware',
 )
 
 LOGIN_REQUIRED_URLS = (
-        r'/(.*)$', # TODO interpret this regex.
-    )
+    r'/(.*)$',  # TODO interpret this regex.
+)
 LOGIN_REQUIRED_URLS_EXCEPTIONS = (
     r'/login(.*)$',
     r'/logout(.*)$',
@@ -75,7 +74,7 @@ LOGIN_REQUIRED_URLS_EXCEPTIONS = (
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.request',
-    )
+)
 
 ROOT_URLCONF = 'talk_project.urls'
 
@@ -113,4 +112,4 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
-    )
+)

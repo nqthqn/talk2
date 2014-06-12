@@ -22,7 +22,7 @@ function create_comment(pp){
     type : "POST",
     data : { the_comment : $('#comment-for-'+pp).val(), postpk : pp},
     success : function(json) {
-      
+
       // Hide the comment box, show the comment button and append the comment.
       $('#comment-box-'+pp).hide();
       $('#comment-for-'+pp).val('');
@@ -63,13 +63,13 @@ function make_post(json){
     <form onsubmit='return false;' style='display:none;' id='comment-box-"+json.postpk+"'> \
     <input type='text' id='comment-for-"+json.postpk+"' /> \
     <input type='submit' id='comment-submit-"+json.postpk+"' class='tiny button' /></form></div>";
-    
+
     return html;
 };
 
 function make_comment(json){
     var html = "<p class='white'>"+json.text+"<br><em style='font-size:.7em;'>— "+json.author+" on "+json.created+"</em></p>";
-    
+
     return html;
 };
 

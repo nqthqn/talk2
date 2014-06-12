@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+
 class Post(models.Model):
     author = models.ForeignKey(User)
     text = models.TextField()
@@ -16,6 +17,7 @@ class Post(models.Model):
 
     def __unicode__(self):
         return self.text+' - '+self.author.username
+
 
 class Comment(models.Model):
     author = models.ForeignKey(User)

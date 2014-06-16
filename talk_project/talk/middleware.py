@@ -26,8 +26,12 @@ class RequireLoginMiddleware(object):
     define any exceptions (like login and logout URLs).
     """
     def __init__(self):
-        self.required = tuple(re.compile(url) for url in settings.LOGIN_REQUIRED_URLS)
-        self.exceptions = tuple(re.compile(url) for url in settings.LOGIN_REQUIRED_URLS_EXCEPTIONS)
+        self.required = tuple(
+            re.compile(url) for url in settings.LOGIN_REQUIRED_URLS
+        )
+        self.exceptions = tuple(
+            re.compile(url) for url in settings.LOGIN_REQUIRED_URLS_EXCEPTIONS
+        )
 
     def process_view(self, request, view_func, view_args, view_kwargs):
         # No need to process URLs if user already logged in
@@ -48,10 +52,13 @@ class RequireLoginMiddleware(object):
         # Explicitly return None for all non-matching requests
         return None
 
+
 class MaintenanceMiddleware(object):
     """Serve a temporary redirect to a maintenance url in maintenance mode"""
     def process_request(self, request):
         if request.method == 'POST':
-            if getattr(settings, 'MAINTENANCE_MODE', False) == True and hasattr(settings, 'MAINTENANCE_URL'):
+            if getattr(settings, 'MAINTENANCE_MODE', False) is True \
+                    and hasattr(settings, 'MAINTENANCE_URL'):
+                # http? where is that defined?
                 return http.HttpResponseRedirect(settings.MAINTENANCE_URL)
             return None

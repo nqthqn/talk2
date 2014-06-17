@@ -1,18 +1,17 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-
 from talk.models import Post, Comment
 
 import json
 
 
-def home(req):
+    def home(req):
 
-    tmpl_vars = {
-        'all_posts': Post.objects.reverse(),
-    }
+        tmpl_vars = {
+            'all_posts': Post.objects.reverse(),
+        }
 
-    return render(req, 'talk/index.html', tmpl_vars)
+        return render(req, 'talk/index.html', tmpl_vars)
 
 # TODO: delete post
 # TODO: delete comment

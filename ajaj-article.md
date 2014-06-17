@@ -22,14 +22,12 @@ Go [check out](https://github.com/broinjc/talk) the talk repo.
 Cookies are delicious!
 ----------------------
 
-Allow me to digress and mention Cross-Site Request Forgeries. CSRF happens when an attaker steals a victims cookies using another website a victim might have open in their browser. Django defends against this by using CSRF tokens in forms. Since we are handling data asynchronously we will need to handle CSRF issues with javascript. 
-
-Further CSRF reading, http://blog.codinghorror.com/preventing-csrf-and-xsrf-attacks/
+Allow me to digress and mention Cross-Site Request Forgeries. CSRF happens when an attaker steals a victims cookies using another website a victim might have open in their browser. Django defends against this by using CSRF tokens in forms. Since we are handling data asynchronously we will need to handle CSRF issues with javascript. You can read more about this on the [Coding Horror](http://blog.codinghorror.com/preventing-csrf-and-xsrf-attacks/) blog. They've got a great article.
 
 Let's build it!
 ---------------
 
-Before we begin open `urls.py`, `views.py`, and `models.py`. Make sure you have 
+Before we begin, open `urls.py`, `views.py`, and `models.py`. Make sure you have 
 
   - a `Post` model 
 
@@ -65,8 +63,8 @@ Before we begin open `urls.py`, `views.py`, and `models.py`. Make sure you have
 
           def create_post(request):
               pass
-
-Also, you will need an index to put your initial page. So create a url, view and template for that as well.
+  
+  - A template to put step 0 in and for `home` view to use.
 
 0. Make a little HTML form
 

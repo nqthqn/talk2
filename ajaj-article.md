@@ -64,7 +64,7 @@ Before we begin, open `urls.py`, `views.py`, and `models.py`. Make sure you have
           def create_post(request):
               pass
   
-  - A template to put step 0 in and for `home` view to use.
+  - An index template for `home` view to use.
 
 0. Make a little HTML form
 

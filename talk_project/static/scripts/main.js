@@ -28,7 +28,13 @@ $(function() {
     // Delete post on click
     $("#talk").on('click', 'a[id^=delete-post-]', function(){
         var post_primary_key = $(this).attr('id').split('-')[2];
-        // call ajax function
+        delete_post(post_primary_key);
+    });
+
+    // Delete comment on click
+    $("#talk").on('click', 'a[id^=delete-comment-]', function(){
+        var post_primary_key = $(this).attr('id').split('-')[2];
+        delete_comment(post_primary_key);
     });
 
     /* AJAX for commenting */
@@ -37,7 +43,7 @@ $(function() {
       $.ajax({
         url : "create_comment/",
         type : "POST",
-        data : { the_comment : $('#comment-for-'+post_primary_key).val(), postpk : post_primary_key},
+        data : { the_comment : $('#comment-for-'+post_primary_key).val(), postpk : post_primary_key },
         success : function(json) {
           // Hide the comment box, show the comment button and append the comment.
           $('#comment-box-'+post_primary_key).hide();
@@ -67,6 +73,7 @@ $(function() {
           $("#talk").prepend(make_post(json));
           console.log("success");
         },
+
         error : function(xhr,errmsg,err) {
           // Show an error
           $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
@@ -74,6 +81,53 @@ $(function() {
           console.log(xhr.status + ": " + xhr.responseText);
         }
       });
+    };
+
+    /* AJAX for removing comments & posts */
+
+    function delete_comment(post_primary_key) {
+      $.ajax({
+        url : "delete_comment/",
+        type : "POST",
+        data : { the_comment : $('#white'+post_primary_key).val() },
+        success : function(json) {
+            // hide the post
+          $('#white'+post_primary_key).hide();
+          console.log("comment deletion successful");
+        },
+
+        error : function(xhr,errmsg,err) {
+          // Show an error
+          $('#results').html("<div class='alert-box alert radius' data-alert>"+
+            "Oops! We have encountered an error. <a href='#' class='close'>&times;</a></div>");
+          console.log(xhr.status + ": " + xhr.responseText);
+        }
+      });
+    };
+
+    function delete_post(post_primary_key){
+        if (confirm('are you sure?')==true){
+          $.ajax({
+            url : "delete_post/",
+            type : "POST",
+            data : { postpk : post_primary_key },
+            success : function(json) {
+                // hide the post
+              $('#post-'+post_primary_key).hide()
+              console.log("post deletion successful");
+            },
+
+            error : function(xhr,errmsg,err) {
+              // Show an error
+              $('#results').html("<div class='alert-box alert radius' data-alert>"+
+                "Oops! We have encountered an error. <a href='#' class='close'>&times;</a></div>");
+              console.log(xhr.status + ": " + xhr.responseText);
+            }
+          });
+        }
+        else {
+            return false;
+        }
     };
 
     // ugly. use angular.
@@ -90,7 +144,7 @@ $(function() {
 
     // ugly. use angular.
     function make_comment(json){
-        var html = "<p class='white'>"+json.text+"<br><em style='font-size:.7em;'>— "+json.author+" on "+json.created+"</em></p>";
+        var html = "<p class='white'>"+json.text+"<br><em style='font-size:.7em;'>— "+json.author+" on "+json.created+"&nbsp;&middot;&nbsp;<a id='delete-comment-"+json.the_comment+"'>Delete</a></em></p>";
 
         return html;
     };

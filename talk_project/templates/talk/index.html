@@ -35,8 +35,13 @@
                     </p>
                 {% endfor %}
                     <!-- When you click Comment it shows the comment box form and hides the comment button -->
-                    <a id="open-comment-{{p.pk}}">Comment</a>
-
+                    <a id="open-comment-{{p.pk}}">Comment</a> 
+                    {% if p.author == request.user %}
+                    &nbsp;&middot;&nbsp;<a id='delete-post-{{p.pk}}'>Delete</a>
+                    {% endif %}
+                    {% if c.author == request.user %}
+                    &nbsp;&middot;&nbsp;<a id='delete-comment-{{p.pk}}'>Delete</a>
+                    {% endif %}
                     <form onsubmit='return false;' style='display:none;' id='comment-box-{{p.pk}}'>
                         {% csrf_token %}
                         <input type="text" id="comment-for-{{p.pk}}" required/>

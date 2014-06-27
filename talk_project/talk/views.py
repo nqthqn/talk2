@@ -47,6 +47,37 @@ def create_post(request):
         content_type="application/json"
     )
 
+def delete_post(request):
+    
+    post = Post.objects.get(pk=int(request.POST.get('postpk')))
+
+    post.delete()
+
+    response_data = {}
+    response_data['msg'] = 'Post was deleted.'
+
+    return HttpResponse(
+        json.dumps(response_data),
+        content_type="application/json"
+    )
+
+def delete_comment(request):
+    
+    the_comment = request.POST.get('the_comment')
+    its_post = Post.objects.get(pk=int(request.POST.get('postpk')))
+
+    comment = Comment(post=its_post, text=the_comment, author=request.user)
+
+    comment.delete()
+
+    response_data = {}
+    response_data['msg'] = 'Comment was deleted.'
+
+    return HttpResponse(
+        json.dumps(response_data),
+        content_type="application/json"
+    )
+
 
 def create_comment(request):
 

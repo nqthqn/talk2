@@ -26,7 +26,20 @@ def home(req):
 
     # return HttpResponse(json.dumps(response_data),
         # content_type="application/json")
+def delete_item(request):
+    if (request.POST.get('item_type') == 'post'):
+        item = Post.objects.get(pk=int(request.POST.get('pk')))
+    if (request.POST.get('item_type') == 'comment'):
+        item = Comment.objects.get(pk=int(request.POST.get('pk')))
+    item.delete();
 
+    response_data = {}
+    response_data['result'] = 'Success!'
+
+    return HttpResponse(
+        json.dumps(response_data),
+        content_type="application/json"
+        )
 
 def create_post(request):
 

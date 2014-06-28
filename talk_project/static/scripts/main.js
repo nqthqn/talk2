@@ -21,15 +21,35 @@ $(function() {
 
     // Submit post form on submit
     $('#post-form').on('submit', function(){
-        console.log("form submitted!")  // sanity check
+        console.log("form submitted!"); // sanity check
         create_post();
     });
 
-    // Delete post on click
-    $("#talk").on('click', 'a[id^=delete-post-]', function(){
-        var post_primary_key = $(this).attr('id').split('-')[2];
-        // call ajax function
+    // Delete item on click
+    $("#talk").on('click', 'a[id^=delete-]', function(){
+        var type = $(this).attr('id').split('-')[1];
+        var primary_key = $(this).attr('id').split('-')[2];
+        delete_item(type, primary_key);
+        console.log("Deleting " + primary_key + " of type " + type);
     });
+
+    function delete_item(type, primary_key) {
+        $.ajax({
+            url : "delete_item/",
+            type : "POST",
+            data : { item_type: type, pk : primary_key },
+            success : function(json) {
+                $('#' + type + '-' + primary_key).hide();
+                console.log("#" + type + "-" + primary_key + " success!");
+            },
+
+            error : function(xhr,errmsg,err) {
+                  $('#results').html("<div class='alert-box alert radius' data-alert>"+
+                    "Oops! We have encountered an error. <a href='#' class='close'>&times;</a></div>");
+                   console.log(xhr.status + ": " + xhr.responseText);
+            }
+        });
+    }
 
     /* AJAX for commenting */
 
@@ -53,7 +73,7 @@ $(function() {
           console.log(xhr.status + ": " + xhr.responseText);
         }
       });
-    };
+    }
 
     /* AJAX for posting */
 
@@ -90,7 +110,7 @@ $(function() {
 
     // ugly. use angular.
     function make_comment(json){
-        var html = "<p class='white'>"+json.text+"<br><em style='font-size:.7em;'>— "+json.author+" on "+json.created+"</em></p>";
+        var html = "<p class='white' id='comment-" + json.pk + "'>"+json.text+"<br><em style='font-size:.7em;'>— "+json.author+" on "+json.created+"</em></p>";
 
         return html;
     };

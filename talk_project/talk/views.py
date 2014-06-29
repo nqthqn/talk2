@@ -13,9 +13,6 @@ def home(req):
 
     return render(req, 'talk/index.html', tmpl_vars)
 
-# TODO: delete post
-# TODO: delete comment
-
 # TODO: limit number of comments shown per page.
 # Instead add on a load more button
 # def load_more(request):
@@ -26,6 +23,23 @@ def home(req):
     # return HttpResponse(json.dumps(response_data),
         # content_type="application/json")
 
+# still only appears after adding a comment or post, not for the correct users
+def delete_item(request):
+    if (request.POST.get('item_type') == 'post'):
+        item = Post.objects.get(pk=int(request.POST.get('pk')))
+    if (request.POST.get('item_type') == 'comment'):
+        item = Comment.objects.get(pk=int(request.POST.get('pk')))
+
+    item.delete();
+
+    response_data = {}
+    response_data['result'] = 'Success!'
+    response_data['pk'] = request.POST.get('pk')
+
+    return HttpResponse(
+        json.dumps(response_data),
+        content_type="application/json"
+        )
 
 def create_post(request):
 
@@ -59,6 +73,7 @@ def create_comment(request):
 
     # Tell the frontend what the backend just did
     response_data['result'] = 'Success!'
+    response_data['pk'] = comment.pk
     response_data['text'] = comment.text
     response_data['created'] = comment.created.strftime('%m/%d %H:%M')
     response_data['author'] = comment.author.username

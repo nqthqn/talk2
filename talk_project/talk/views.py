@@ -24,7 +24,7 @@ def home(req):
     # return HttpResponse(json.dumps(response_data),
         # content_type="application/json")
 
-# TODO: add comment id to the <p> so it can be deleted via this function.
+# still only appears after adding a comment or post, not for the correct users
 def delete_item(request):
     if (request.POST.get('item_type') == 'post'):
         item = Post.objects.get(pk=int(request.POST.get('pk')))

@@ -22,14 +22,13 @@
            <!-- The feed -->
             {% for p in all_posts %}
                 <div class="panel radius" id='post-{{p.pk}}'>
-
                     <p>
                         {{p.text}}
                         <br><em style='font-size:.7em;'>— {{ p.author }} on {{p.created}}</em>
                     </p>
 
                 {% for c in p.comment_set.all %}
-                    <p class='comment'>
+                    <p class='comment' id='comment-{{c.pk}}'>
                         {{ c.text }}
                         <br><em style='font-size:.7em;'>— {{ c.author }} on {{c.created}}</em>
                     </p>

@@ -39,7 +39,7 @@ def create_post(request):
     response_data['result'] = 'Success!'
     response_data['postpk'] = post.pk
     response_data['text'] = post.text
-    response_data['created'] = post.created.strftime('%m/%d %H:%M')
+    response_data['created'] = post.created.strftime('%B %d, %Y %I:%M %p') 
     response_data['author'] = post.author.username
 
     return HttpResponse(
@@ -62,11 +62,8 @@ def delete_post(request):
     )
 
 def delete_comment(request):
-    
-    the_comment = request.POST.get('the_comment')
-    its_post = Post.objects.get(pk=int(request.POST.get('postpk')))
 
-    comment = Comment(post=its_post, text=the_comment, author=request.user)
+    comment = Comment.objects.get(pk=int(request.POST.get('commentpk')))
 
     comment.delete()
 
@@ -92,9 +89,9 @@ def create_comment(request):
     # Tell the frontend what the backend just did
     response_data['result'] = 'Success!'
     response_data['text'] = comment.text
-    response_data['created'] = comment.created.strftime('%m/%d %H:%M')
+    response_data['created'] = comment.created.strftime('%B %d, %Y %I:%M %p') 
     response_data['author'] = comment.author.username
-
+    response_data['commentpk'] = comment.pk
     response_data['hugs_and_kisses'] = True
 
     return HttpResponse(json.dumps(

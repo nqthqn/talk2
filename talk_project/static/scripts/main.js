@@ -7,6 +7,7 @@ $(function() {
         var post_primary_key = $(this).attr('id').split('-')[2];
         $('#comment-box-'+post_primary_key).show();
         $('#open-comment-'+post_primary_key).hide();
+        $('#delete-post-'+post_primary_key).hide()
         $('#comment-for-'+post_primary_key).focus();
     });
 
@@ -33,8 +34,8 @@ $(function() {
 
     // Delete comment on click
     $("#talk").on('click', 'a[id^=delete-comment-]', function(){
-        var post_primary_key = $(this).attr('id').split('-')[2];
-        delete_comment(post_primary_key);
+        var comment_primary_key = $(this).attr('id').split('-')[2];
+        delete_comment(comment_primary_key);
     });
 
     /* AJAX for commenting */
@@ -49,6 +50,7 @@ $(function() {
           $('#comment-box-'+post_primary_key).hide();
           $('#comment-for-'+post_primary_key).val('');
           $('#open-comment-'+post_primary_key).show();
+          $('#delete-post-'+post_primary_key).show()
           $('#open-comment-'+post_primary_key).before(make_comment(json));
         },
 
@@ -85,14 +87,13 @@ $(function() {
 
     /* AJAX for removing comments & posts */
 
-    function delete_comment(post_primary_key) {
+    function delete_comment(comment_primary_key) {
       $.ajax({
         url : "delete_comment/",
         type : "POST",
-        data : { the_comment : $('#white'+post_primary_key).val() },
+        data : { commentpk : comment_primary_key },
         success : function(json) {
-            // hide the post
-          $('#white'+post_primary_key).hide();
+          $('#comment-'+comment_primary_key).hide()
           console.log("comment deletion successful");
         },
 
@@ -130,10 +131,13 @@ $(function() {
         }
     };
 
-    // ugly. use angular.
     function make_post(json){
-        var html = "<div class='panel radius' id='post-"+json.postpk+"'><p>"+json.text+"<br> \
-        <em style='font-size:.7em;'>— "+json.author+" on "+json.created+"</em></p><a id='open-comment-"+json.postpk+"'>Comment</a>&nbsp;&middot;&nbsp;<a id='delete-post-"+json.postpk+"'>Delete</a> \
+        //make html the same as the template index.html
+        //put delete button in a div to hide while posting
+        //fix #m#d#y
+        var html = "<div class='panel radius' id='post-"+json.postpk+"'><p>"+json.text+"</br> \
+        <em style='font-size:.7em;'>— "+json.author+" on "+json.created+"</em></p><a id='open-comment-"+json.postpk+"'>Comment</a> \
+        <div style='display:inline-block;' id='delete-post-"+json.postpk+"'>&nbsp;&middot;&nbsp;<a id='delete-post-"+json.postpk+"'>Delete</a></div> \
         <form onsubmit='return false;' style='display:none;' id='comment-box-"+json.postpk+"'> \
         <input type='text' id='comment-for-"+json.postpk+"' /> \
         <input type='submit' id='comment-submit-"+json.postpk+"' class='tiny button' /></form> \
@@ -142,9 +146,13 @@ $(function() {
         return html;
     };
 
-    // ugly. use angular.
     function make_comment(json){
-        var html = "<p class='white'>"+json.text+"<br><em style='font-size:.7em;'>— "+json.author+" on "+json.created+"&nbsp;&middot;&nbsp;<a id='delete-comment-"+json.the_comment+"'>Delete</a></em></p>";
+        //make html the same as the template index.html
+        //put delete button in a div to hide while posting
+        //fix #m#d#y
+        var html = "<div class='comment' id='comment-"+json.commentpk+"'>"+json.text+"</br> \
+        <em style='font-size:.7em;'>— "+json.author+" on "+json.created+" \
+        &nbsp;&middot;&nbsp;<a id='delete-comment-"+json.commentpk+"'>Delete</a></em></div>";
 
         return html;
     };

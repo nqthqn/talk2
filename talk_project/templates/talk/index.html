@@ -24,35 +24,70 @@
                 <div class="panel radius" id='post-{{p.pk}}'>
 
                     <p>
-                        {{p.text}}
-                        <br><em style='font-size:.7em;'>— {{ p.author }} on {{p.created}}</em>
+                        <p class="ptxt">{{p.text}}</p>
+                            <br>
+                                <p class="pfooter" style='text-align:right;'>
+                                    <em style='font-size:.7em'>— {{ p.author }} on {{p.created}}                    
+                                            {% if p.author == request.user %}
+                                            &nbsp;&middot;&nbsp;<a id='open-edit-post-{{p.pk}}'>Edit</a>
+                                            &nbsp;&middot;&nbsp;<a id='delete-post-{{p.pk}}'>Delete</a>
+                                            {% endif %}
+                                    </em>
+                                </p>
                     </p>
 
-                {% for c in p.comment_set.all %}
-                            <div class='comment' id='comment-{{c.pk}}'>
-                                {{ c.text }}
-                                </br>
-                                <em style='font-size:.7em'>— {{ c.author }} on {{c.created}}                    
-                                {% if c.author == request.user %}
-                                &nbsp;&middot;&nbsp;<a id='delete-comment-{{c.pk}}'>Delete</a>
-                                {% endif %}
-                                </em>
+                    <form onsubmit='return false;' style='display:none;' id='edit-post-box-{{p.pk}}'>   
+
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <input type='hidden' name='postpk' value='{{p.pk}}'/>
+                                <textarea name="edited_post" id='edited_post-{{p.pk}}'></textarea>
+                                <input type='submit' value='Update Post' id='edit-post-submit-{{p.pk}}' class='commentcenter tiny button' />
                             </div>
+                        </div>
+                    </form>
+
+                {% for c in p.comment_set.all %}
+                    <div class='comment' id='comment-{{c.pk}}'>
+                        <p class="ctxt">{{c.text}}</p>
+                            <br>
+                                <p class="cfooter">
+                                    <em style='font-size:.7em'>— {{ c.author }} on {{c.created}}                    
+                                        {% if c.author == request.user %}
+                                        &nbsp;&middot;&nbsp;<a id='open-edit-comment-{{c.pk}}'>Edit</a>
+                                        &nbsp;&middot;&nbsp;<a id='delete-comment-{{c.pk}}'>Delete</a>
+                                        {% endif %}
+                                    </em>
+                                </p>
+
+                    <form onsubmit='return false;' style='display:none;' id='edit-comment-box-{{c.pk}}'>   
+
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="large-12 columns">
+                            <input type='hidden' name='commentpk' value='{{c.pk}}'/>
+                            <textarea name="edited_comment" id='edited_comment-{{c.pk}}'></textarea>
+                            <input type='submit' value='Update Comment' id='edit-comment-submit-{{c.pk}}' class='commentcenter tiny button' />
+                            </div>
+                        </div>
+                    </form>
+
+                    </div>
                 {% endfor %}
 
-                    <!-- When you click Comment it shows the comment box form and hides the comment button -->
-                    <a id="open-comment-{{p.pk}}">Comment</a> 
-                    {% if p.author == request.user %}
-                    <div id='delete-post-{{p.pk}}' style="display:inline-block;">
-                    &nbsp;&middot;&nbsp;<a id='delete-post-{{p.pk}}'>Delete</a>
-                    </div>
-                    {% endif %}
+                    <a class='commentcenter' id="open-comment-{{p.pk}}">Add a Comment</a> 
 
                     <form onsubmit='return false;' style='display:none;' id='comment-box-{{p.pk}}'>
+
                         {% csrf_token %}
-                        <input type="text" id="comment-for-{{p.pk}}" required/>
-                        <input type='submit' id='comment-submit-{{p.pk}}' class='tiny button' />
-                    </form>
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <textarea id="comment-for-{{p.pk}}"></textarea>
+                                <input type='submit' value='Add a Comment' id='comment-submit-{{p.pk}}' class='commentcenter tiny button' />
+                            </div>
+                        </div>
+                    </form>                    
                 </div>
             {% endfor %}
         </div>

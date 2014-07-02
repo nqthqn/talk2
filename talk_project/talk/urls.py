@@ -9,4 +9,6 @@ urlpatterns = patterns(
     url(r'^create_comment/$', 'create_comment'),
     url(r'^delete_post/$', 'delete_post'),
     url(r'^delete_comment/$', 'delete_comment'),
+    url(r'^edit_post/$', 'edit_post'),
+    url(r'^edit_comment/$', 'edit_comment'),
 )

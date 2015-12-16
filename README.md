@@ -8,20 +8,9 @@ A small AJAX-powered Django app for implementing a super simple communication wa
 
 ## Setup
 
-1. Clone. Activate virtualenv. Install requirements. Syncdb. Run server.
+1. Activate virtualenv. 
+2. Install requirements. `pip install -r requirements.txt`
+3. Syncdb. 
+4. Run server.
 
-# todo
-
-- [ ] Add Unit Tests [michael]
-- [ ] Move user management to separate app [michael]
-    - Add `is_moderator` flag for Users to give them power to delete anybodies comment
-- [ ] Limit number of posts shown per page; instead add on a load more button. [alec]
-- [ ] Hide comments when |comments| > 4. Add 'Show n comments' button. [alec]
-- [x] Allow users to edit/delete there own comments & posts [trent]
-- [x] Add HTML5 form validation (no empty comments or posts) [michael]
-
-
-# wishes
-- [ ] Rewrite in Angular to simplify all that messy jQuery [michael]
-- [ ] Rainbow barfing unicorns
 
